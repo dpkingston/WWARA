@@ -101,5 +101,5 @@ def main(argv):
                     continue
             expiring.append(record)
     write_expiring('expiring.csv', expiring)
-    
+
 main(sys.argv)
