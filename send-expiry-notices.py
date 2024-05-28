@@ -51,7 +51,6 @@ def read_notifications(file):
     with open(file) as csvfile:
         reader = csv.DictReader(csvfile)
         for record in reader:
-            record['expiry_dt'] = datetime.datetime.strptime(record['expiry'], '%Y-%m-%d')
             notifications[record['id']] = record
     print('Read %d records from %s' % (len(notifications), file))
     return notifications
@@ -94,8 +93,9 @@ def main(argv):
         if time_to_expiry < EXPIRY_WINDOW:
             print('%s expires soon (%s)' % (record['id'], time_to_expiry))
             if record['id'] in notifications:
-                record = notifications[record['id']]
-                sent_delta = now - expiry_dt
+                notification = notifications[record['id']]
+                sent_dt = datetime.datetime.strptime(notification['sent'], '%Y-%m-%d')
+                sent_delta = expiry_dt - sent_dt
                 if sent_delta < EXPIRY_WINDOW:
                     # already sent a notification - skip
                     continue
