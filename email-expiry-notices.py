@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
 '''
-send-expiry-notices.py - generate CSV with information to trigger renewal notices
+email-expiry-notices.py - generate CSV with information to trigger renewal notices
 
-Usage: send-expiry-notices.py > logfile
+Usage: (see below)
 
-Output will be written to notices-needed.csv, errors on stdout/stderr.
+The programs updates notifications file with entries it has successfully posted.
+Errors on stdout/stderr.
 
 Sample input:
 "outfreq","infreq","tone","access","stationloc","areaserve","stn","first","last","trst","email","status","expiration"
@@ -32,7 +33,10 @@ EXPIRY_WINDOW = datetime.timedelta(days=92)
 EXPIRATION_FIELDS = ['outfreq', 'infreq', 'tone', 'access', 'stationloc', 'areaserve', 'stn',
                     'first', 'last', 'trst', 'email', 'status', 'arrlnotes', 'expiration']
 NOTIFICATION_FIELDS = EXPIRATION_FIELDS + ['id', 'sent']
-FROM = 'dpk@randomnotes.org'
+SMTP_SERVER = 'smtp.gmail.com'
+SMTP_CREDENTIALS = 'smtp_credentials.txt'
+FROM = 'wwarasecretary@gmail.com'
+
 
 def read_expiring(file):
     expiring = []
@@ -79,18 +83,24 @@ def read_template(file):
     with open(file) as f:
         return Template(f.read())
 
-def send_email(template, record):
+def read_smtp_credentials(file):
+    print('Reading smtp credentials from %s' % file)
+    with open(file) as f:
+        line = f.read()
+    return line.strip().split(' ')
+
+def send_email(template, record, credentials):
     fromaddr = FROM
     toaddr = [record['email']]
-    toaddr = ['dpk@randomnotes.org']   # TODO: Remove when testing done
+    #toaddr = ['dpk@randomnotes.org']   # TODO: Remove when testing done
     print('%s' % record)
     msg = template.substitute(record)
     print('Sending email from %s, to %s\n%s\n\n' % (fromaddr, toaddr, msg))
-    return
 
-    server = smtplib.SMTP('localhost')
-    server.set_debuglevel(1)
-    server.sendmail(fromaddr, toaddrs, msg)
+    server = smtplib.SMTP_SSL(SMTP_SERVER)
+    #server.set_debuglevel(1)
+    server.login(credentials[0], credentials[1])
+    server.sendmail(fromaddr, toaddr, msg)
     server.quit()
 
 
@@ -104,14 +114,17 @@ def write_notification(file, record):
 def main(argv):
     expiring = []
 
-    if len(argv) != 4:
-        print('Usage: %s expiring.csv notifications.csv template.txt')
-        print('  Sends emails to expiring entries and appends to notifications')
+    if len(argv) != 5:
+        print('Usage: %s expiring.csv notifications.csv template.txt smtp_credentials.txt')
+        print('  Sends emails to expiring entries using the template and appends to notifications.')
+        print('  SMTP credentials for smtp.gmail.com are in the credentials file ("user@gmail app-password").'
         quit()
 
     expiring = read_expiring(argv[1])
     notifications = read_notifications(argv[2])
     template = read_template(argv[3])
+    credentials = read_smtp_credentials(argv[4])
+    print('%s' % credentials)
     now = datetime.datetime.now()
 
     for record in expiring:
@@ -136,7 +149,7 @@ def main(argv):
                     continue
             else:
                 print('%s not in notifications' % record['id'])
-            send_email(template, record)
+            send_email(template, record, credentials)
             write_notification(argv[2], record)
 
 main(sys.argv)
