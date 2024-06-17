@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+# pylint: disable=locally-disabled, line-too-long, unspecified-encoding
 '''
 email-expiry-notices.py - generate CSV with information to trigger renewal notices
 
@@ -23,10 +24,10 @@ outfreq,infreq,tone,access,stationloc,areaserve,stn,first,last,trst,email,status
 
 '''
 
+import argparse
 import csv
 import datetime
 import smtplib
-import sys
 from string import Template
 
 EXPIRY_WINDOW = datetime.timedelta(days=92)
@@ -39,22 +40,26 @@ FROM = 'wwarasecretary@gmail.com'
 
 
 def read_expiring(file):
+    '''Read list of expiring coordinations, and return a list.'''
     expiring = []
 
-    print('Processing %s' % file)
+    print(f"Processing {file}")
     with open(file) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             row['id'] = row['outfreq']+':'+row['stationloc']
             #print("%s" % row)
             expiring.append(row)
-    print('Read %d expiring records' % len(expiring))
+    print(f"Read {len(expiring)} expiring records")
     return expiring
 
 def read_notifications(file):
+    '''Read list of previous notifications, and return a dictionary if still relevant.
+       The dictionary allows us to quick locate based on our generated record id.
+    '''
     notifications = {}
 
-    print('Processing %s' % file)
+    print(f"Processing {file}")
     try:
         with open(file) as csvfile:
             reader = csv.DictReader(csvfile)
@@ -64,67 +69,85 @@ def read_notifications(file):
                     existing_dt = datetime.datetime.strptime(notifications[record['id']]['sent'], '%Y-%m-%d')
                     new_dt = datetime.datetime.strptime(record['sent'], '%Y-%m-%d')
                     if existing_dt > new_dt:
-                        print('skipping older record for %s' % record['id'])
+                        print(f"skipping older record for {record['id']}")
                         continue
                 notifications[record['id']] = record
-            print('Read %d records from %s' % (len(notifications), file))
+            print(f"Read {len(notifications)} records from {file}")
     except FileNotFoundError:
         initialize_notifications(file)
-        print('Initialized file %s' % file)
+        print(f"Initialized file {file}")
     return notifications
 
 def initialize_notifications(file):
+    '''Create the notifications file and write out the header line.'''
     with open(file, 'a', newline='\n') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=NOTIFICATION_FIELDS)
         writer.writeheader()
 
 def read_template(file):
-    print('Reading template %s' % file)
-    with open(file) as f:
-        return Template(f.read())
+    '''Read the email template and return it as a Template object.'''
+    print(f"Reading template {file}")
+    with open(file) as template:
+        return Template(template.read())
 
 def read_smtp_credentials(file):
-    print('Reading smtp credentials from %s' % file)
-    with open(file) as f:
-        line = f.read()
+    '''Read the account (email address) and app password for Gmail SMTP.'''
+    print(f"Reading smtp credentials from {file}")
+    with open(file) as creds:
+        line = creds.read()
     return line.strip().split(' ')
 
-def send_email(template, record, credentials):
+def send_email(template, record, credentials, send_emails):
+    '''Create and send an email for 1 expiring coordination.
+       Return true if the email was sucessfully accepted by Gmail.
+    '''
     fromaddr = FROM
     toaddr = [record['email']]
-    #toaddr = ['dpk@randomnotes.org']   # TODO: Remove when testing done
-    print('%s' % record)
+    print(f"{record}")
     msg = template.substitute(record)
-    print('Sending email from %s, to %s\n%s\n\n' % (fromaddr, toaddr, msg))
+    print(f"Sending email from {fromaddr}, to {toaddr}\n{msg}\n\n")
 
-    server = smtplib.SMTP_SSL(SMTP_SERVER)
-    #server.set_debuglevel(1)
-    server.login(credentials[0], credentials[1])
-    server.sendmail(fromaddr, toaddr, msg)
-    server.quit()
+    if not send_emails:
+        return False
 
+    try:
+        server = smtplib.SMTP_SSL(SMTP_SERVER)
+        #server.set_debuglevel(1)
+        server.login(credentials[0], credentials[1])
+        server.sendmail(fromaddr, toaddr, msg)
+        server.quit()
+    except smtplib.SMTPException:
+        print(f"Failed to send mail to {toaddr}")
+        return False
+    else:
+        return True
 
 def write_notification(file, record):
+    '''Append a single entry to the notifications file.'''
     with open(file, 'a', newline='') as csvfile:
         record['sent'] = datetime.datetime.now().strftime('%Y-%m-%d')
         writer = csv.DictWriter(csvfile, fieldnames=NOTIFICATION_FIELDS)
         writer.writerow(record)
-    print('Wrote record for %s to %s' % (record['id'], file))
+    print(f"Wrote record for {record['id']} to {file}")
 
-def main(argv):
-    expiring = []
+def main():
+    '''Main program.'''
 
-    if len(argv) != 5:
-        print('Usage: %s expiring.csv notifications.csv template.txt smtp_credentials.txt')
-        print('  Sends emails to expiring entries using the template and appends to notifications.')
-        print('  SMTP credentials for smtp.gmail.com are in the credentials file ("user@gmail app-password").'
-        quit()
+    parser = argparse.ArgumentParser(
+      description='Sends emails to expiring entries using the template and appends to notifications.')
+    parser.add_argument('--send_emails', help='Disable dry_run and actually send emails.',
+                        action='store_true')
+    parser.add_argument('expiring', help='CSV file with upcoming expirations')
+    parser.add_argument('notifications', help='CSV file of already posted notifications')
+    parser.add_argument('template', help='Text file with Python Template syntax')
+    parser.add_argument('credentials', help='GMail SMTP credientials (user@gmail.com app-password)')
+    args = parser.parse_args()
 
-    expiring = read_expiring(argv[1])
-    notifications = read_notifications(argv[2])
-    template = read_template(argv[3])
-    credentials = read_smtp_credentials(argv[4])
-    print('%s' % credentials)
+    expiring = read_expiring(args.expiring)
+    notifications = read_notifications(args.notifications)
+    template = read_template(args.template)
+    credentials = read_smtp_credentials(args.credentials)
+    print(f"Credentials: {credentials}")
     now = datetime.datetime.now()
 
     for record in expiring:
@@ -137,19 +160,19 @@ def main(argv):
 
         time_to_expiry = expiration_dt - now
         if time_to_expiry < EXPIRY_WINDOW:
-            print('%s expires soon (%s)' % (record['id'], time_to_expiry))
+            print(f"{record['id']} expires soon ({time_to_expiry})")
             if record['id'] in notifications:
-                #print('Found %s in notifications' % record['id'])
+                #print(f"Found {record['id']} in notifications")
                 notification = notifications[record['id']]
                 sent_dt = datetime.datetime.strptime(notification['sent'], '%Y-%m-%d')
                 sent_delta = expiration_dt - sent_dt
                 if sent_delta < EXPIRY_WINDOW:
                     # already sent a notification - skip
-                    #print('We already sent this notification on %s.' % notification['sent'])
+                    #print(f"We already sent this notification on {notification['sent']}")
                     continue
             else:
-                print('%s not in notifications' % record['id'])
-            send_email(template, record, credentials)
-            write_notification(argv[2], record)
+                print(f"{record['id']} not in notifications")
+            if send_email(template, record, credentials, args.send_emails):
+                write_notification(args.notifications, record)
 
-main(sys.argv)
+main()
