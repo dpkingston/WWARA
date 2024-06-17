@@ -1,0 +1,18 @@
+To: $first, $trst
+ 
+The WWARA Coordination for the $outfreq repeater/link located at/near $stationloc expired/expires on $expiration. There is a six month grace period for coordinations, before they are deleted, so please take immediate action.
+
+If the repeater/link is still in operation and the original configuration has not changed since it was originally coordinated, all that is required for renewing the coordination is submitting an updated Technical Data Sheet (TDS). The TDS can be downloaded from the WWARA website (https://www.wwara.org). Please mark the "Action Requested" section as a "Renewal" and indicate in the notes section the renewal is within the six months grace period.
+ 
+If the repeater/link is still operational, but the configuration has changed since the coordination has been issued, the process is similar, but it will need to be re-coordinated in the new configuration and/or location. When submitting the new TDS, mark the "Action Requested" section as a "New Coordination" and indicated in the notes section this is a re-coordination of a previously coordinated repeater.
+
+Please be advised that as of January 2012, the WWARA no longer requires a $$5 renewal and the preferred method for submitting a TDS is via e-mail to the secretary. The new TDS form can be filled out online and saved as a PDF. (instruction available on the website here: https://www.wwara.org/tds.php) We have found this greatly reduces the complexity of the process and speeds up the coordination effort.
+
+If the repeater/link listed above is no longer under your trusteeship, please forward this e-mail to the new trustee. We would also appreciate being notified, so we can update our records. If the repeater is no longer on the air, please notify the WWARA secretary (secretary@wwara.org) by e-mail, so the data record can be put into archive status. (Or just reply to this e-mail)
+
+While we do not require a filing fee, we encourage all trustees to become members by submitting a voluntary online dues payment on our website (http://www.wwara.org/membership) including your call and contact information.
+ 
+If you have any questions, please contact me at secretary@wwara.org. 
+ 
+73,
+WWARA Secretary
