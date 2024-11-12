@@ -4,8 +4,6 @@ Subject: WWARA Coordination Expiry for $outfreq/$stationloc
 To: $first $trst <$email>
 
  
-[Note: This email is first of new notification service for WWARA coordinations.  There could be errors.  If you see a problem with this notification process, please reach out to Doug Kingston, dpk@randomnotes.org, WWARA Treasurer and resident email hacker.]
-
 The WWARA Coordination for the $outfreq repeater/link located at/near $stationloc expired/expires on $expiration. There is a six month grace period for coordinations, before they are deleted, so please take immediate action.
 
 If the repeater/link is still in operation and the original configuration has not changed since it was originally coordinated, all that is required for renewing the coordination is submitting an updated Technical Data Sheet (TDS). The TDS can be downloaded from the WWARA website (https://www.wwara.org). Please mark the "Action Requested" section as a "Renewal" and indicate in the notes section the renewal is within the six months grace period.
