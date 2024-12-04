@@ -2,7 +2,7 @@
 
 # pylint: disable=locally-disabled, line-too-long, unspecified-encoding
 '''
-email-expiry-notices.py - generate CSV with information to trigger renewal notices
+email-expiry-notices.py - identify needed renewal notices and generate emails
 
 Usage: (see below)
 
