@@ -1,0 +1,31 @@
+From: WWARA Secretary <wwarasecretary@gmail.com>
+Reply-To: secretary@wwara.org
+Subject: WWARA Dues Renewal
+To: $first $last <$email>
+
+Dear $first,
+
+With the beginning of a new year, it is renewal time for WWARA members.  WWARA is a volunteer organization supporting amateur repeater operators and users in Western Washington. Your modest membership fee ($$5) covers the costs of operating the organization including web hosting, mailing, Zoom subscription and other administrative costs of a non-profit Washington corporation.
+
+The WWARA has been working to make repeater listings more accessible and they are now updated nightly and available in multiple formats on our website.  We are also trying to make the Western Washington band plans easier to interpret. We are engaging the community in discussion of potential narrow band options, discussed in our narrow banding whitepaper. Finally, we are in the process of improving our website and coordination database with the intention of moving to an online coordination system, to make the coordination and renewal process easier for both repeater trustees and WWARA volunteers.
+
+Unfortunately, many of the repeater trustees are currently not members and many are not even signed up to the groups.io board which is the primary communication channel for the WWARA. While it is not required for a coordination trustee to be a WWARA member, the board would like to encourage trustees to support the group. Membership is required to vote on changes for how the WWARA operates, and this will include when and how to implement narrowband changes for 2m and 70cm. At the very least, the board would highly recommend all trustee's join the WWARA Groups.io board so you receive notifications and announcements. The volume of traffic is very low, which is intentional.
+
+We need you to do two things today:
+
+If you are not already signed up to our groups.io board, sign up today.
+Renew (or start) your $$5 membership support for WWARA using Paypal.
+
+We hope to see you at our next Zoom meeting, December 7th, 2024 @ 10:00 PST where the primary topic will be the adoption of implementation plans for narrowbanding of 2m and 70cm.  Zoom details will be in the Groups.IO discussion site (see below).
+
+73,
+
+Doug Kingston, KD7DK
+WWARA Treasurer
+
+WWARA Groups.IO - https://groups.io/g/wwara/ 
+WWARA Website - https://www.wwara.org/
+WWARA Membership Dues - https://www.wwara.org/coordination-process/membership/
+New 70cm Band Plan: https://www.wwara.org/documents/70cmbandplan/
+Narrow banding whitepaper - https://www.wwara.org/documents/narrowband-plan/
+WWARA Meeting Agenda: https://www.wwara.org/

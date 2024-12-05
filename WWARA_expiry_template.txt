@@ -1,7 +1,7 @@
 From: WWARA Secretary <wwarasecretary@gmail.com>
 Reply-To: secretary@wwara.org
 Subject: WWARA Coordination Expiry for $outfreq/$stationloc
-To: $first $trst <$email>
+To: $first $last <$email>
 
  
 The WWARA Coordination for the $outfreq repeater/link located at/near $stationloc expired/expires on $expiration. There is a six month grace period for coordinations, before they are deleted, so please take immediate action.
