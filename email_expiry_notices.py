@@ -2,7 +2,7 @@
 
 # pylint: disable=locally-disabled, line-too-long, unspecified-encoding
 '''
-email-expiry-notices.py - generate CSV with information to trigger renewal notices
+email-expiry-notices.py - identify needed renewal notices and generate emails
 
 Usage: (see below)
 
@@ -27,8 +27,7 @@ outfreq,infreq,tone,access,stationloc,areaserve,stn,first,last,trst,email,status
 import argparse
 import csv
 import datetime
-import smtplib
-from string import Template
+from email_utils import initialize_notifications, read_template, read_smtp_credentials, send_email, write_notification
 
 EXPIRY_WINDOW = datetime.timedelta(days=92)
 EXPIRATION_FIELDS = ['outfreq', 'infreq', 'tone', 'access', 'stationloc', 'areaserve', 'stn',
@@ -74,61 +73,9 @@ def read_notifications(file):
                 notifications[record['id']] = record
             print(f"Read {len(notifications)} records from {file}")
     except FileNotFoundError:
-        initialize_notifications(file)
+        initialize_notifications(file, NOTIFICATION_FIELDS)
         print(f"Initialized file {file}")
     return notifications
-
-def initialize_notifications(file):
-    '''Create the notifications file and write out the header line.'''
-    with open(file, 'a', newline='\n') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=NOTIFICATION_FIELDS)
-        writer.writeheader()
-
-def read_template(file):
-    '''Read the email template and return it as a Template object.'''
-    print(f"Reading template {file}")
-    with open(file) as template:
-        return Template(template.read())
-
-def read_smtp_credentials(file):
-    '''Read the account (email address) and app password for Gmail SMTP.'''
-    print(f"Reading smtp credentials from {file}")
-    with open(file) as creds:
-        line = creds.read()
-    return line.strip().split(' ')
-
-def send_email(template, record, credentials, send_emails):
-    '''Create and send an email for 1 expiring coordination.
-       Return true if the email was sucessfully accepted by Gmail.
-    '''
-    fromaddr = FROM
-    toaddr = [record['email']]
-    print(f"{record}")
-    msg = template.substitute(record)
-    print(f"Sending email from {fromaddr}, to {toaddr}\n{msg}\n\n")
-
-    if not send_emails:
-        return False
-
-    try:
-        server = smtplib.SMTP_SSL(SMTP_SERVER)
-        #server.set_debuglevel(1)
-        server.login(credentials[0], credentials[1])
-        server.sendmail(fromaddr, toaddr, msg)
-        server.quit()
-    except smtplib.SMTPException:
-        print(f"Failed to send mail to {toaddr}")
-        return False
-    else:
-        return True
-
-def write_notification(file, record):
-    '''Append a single entry to the notifications file.'''
-    with open(file, 'a', newline='') as csvfile:
-        record['sent'] = datetime.datetime.now().strftime('%Y-%m-%d')
-        writer = csv.DictWriter(csvfile, fieldnames=NOTIFICATION_FIELDS)
-        writer.writerow(record)
-    print(f"Wrote record for {record['id']} to {file}")
 
 def main():
     '''Main program.'''
@@ -172,7 +119,7 @@ def main():
                     continue
             else:
                 print(f"{record['id']} not in notifications")
-            if send_email(template, record, credentials, args.send_emails):
-                write_notification(args.notifications, record)
+            if send_email(template, record, SMTP_SERVER, credentials, FROM, args.send_emails):
+                write_notification(args.notifications, record, NOTIFICATION_FIELDS)
 
 main()
