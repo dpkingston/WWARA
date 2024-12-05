@@ -43,30 +43,30 @@ up upcoming coordination expirations, and sending dues renewal notices.
    A cut and paste of the lines on this page should generate a file with tab delimiters between the fields.  Place in some file like temp.txt.
 
 1. Use tr command to convert the tabs to commas
-'''
+```
 tr "\t" "," < temp.txt > ExpiringMembers.csv
-'''
+```
 
 1. Examine the resulting csv file and make sure it conforms to the field headings in the next step.
 
 1. Add this field header line to the top of the file
-'''
+```
 call,first,last,email,alt_email,expiry,level,flag
-'''
+```
 
 1. Pick a unique name for the notifications file, e.g. DuesNogifications-Dec2024.
 
 1. Run a dry run pass that will not send any email or update DuesNogifications-Dec2024.csv
-'''
+```
 ./email_dues_renewal.py ExpiringMembers.csv DuesNogifications-Dec2024.csv WWARA_dues_template.txt smtp_credentials.txt > log.test
-'''
+```
 
 1. Review the logfile for correctness.
 
 1. Run it for real.
-'''
+```
 ./email_dues_renewal.py --send_emails ExpiringMembers.csv DuesNogifications-Dec2024.csv WWARA_dues_template.txt smtp_credentials.txt > log.YYYYMMDD.1
-'''
+```
 
 1. Depending on how many emails your generate, you may get throttled by Gmail and your sending will start to fail.  That's OK.  Take a coffee break
    and come back in an hour or so and just re-run the same command.  The DuesNogifications-Dec2024.csv has a record of all the successfully sent
