@@ -6,7 +6,7 @@ in support of the frequency coordination function it performs.
 For example, this includes sending notices to coordination holders
 up upcoming coordination expirations, and sending dues renewal notices.
 
-## The Process
+## Coordination Related Processes
 
 ### Sending Coordination Expiry Notices
 
@@ -72,3 +72,50 @@ call,first,last,email,alt_email,expiry,level,flag
    and come back in an hour or so and just re-run the same command.  The DuesNogifications-Dec2024.csv has a record of all the successfully sent
    notifications, and it won't resend them.  They are just skipped, and it will pick up sending where it started to fail earlier.
 
+## Membership and Dues Related Processes
+
+The master data is kept in two spreadsheets, nominally Members.csv and Transactions.csv.  process_dues_payments.py is the
+first tool for managing these files and allow batch processing for a set of updates such as a batch of dues payments received
+on the same day for several different members (keyed by callsign).
+
+A typical invocation to process dues payments received on the same day would look like (including --dryrun to test run first):
+```
+./process_dues_payments.py --dryrun --date=2024-12-08 KC7GR W7KWS K7FW WA7CHF AC7MD AD7AV
+  Member KC7GR paid through 2024, year=2025, extend=True
+  Updated member KC7GR now expires 2025
+  append_transaction dryrun: {'Callsign': 'KC7GR', 'Date': '2024-12-08', 'Amount': '5.00', 'Donate': '0.00', 'Trans No': '2317'}
+  Member W7KWS paid through 2005, year=2025, extend=True
+  Updated member W7KWS now expires 2025
+  append_transaction dryrun: {'Callsign': 'W7KWS', 'Date': '2024-12-08', 'Amount': '5.00', 'Donate': '0.00', 'Trans No': '2318'}
+  Member K7FW paid through 2024, year=2025, extend=True
+  Updated member K7FW now expires 2025
+  append_transaction dryrun: {'Callsign': 'K7FW', 'Date': '2024-12-08', 'Amount': '5.00', 'Donate': '0.00', 'Trans No': '2319'}
+  Member WA7CHF paid through 2024, year=2025, extend=True
+  Updated member WA7CHF now expires 2025
+  append_transaction dryrun: {'Callsign': 'WA7CHF', 'Date': '2024-12-08', 'Amount': '5.00', 'Donate': '0.00', 'Trans No': '2320'}
+  Member AC7MD paid through 2024, year=2025, extend=True
+  Updated member AC7MD now expires 2025
+  append_transaction dryrun: {'Callsign': 'AC7MD', 'Date': '2024-12-08', 'Amount': '5.00', 'Donate': '0.00', 'Trans No': '2321'}
+  Member AD7AV paid through 2024, year=2025, extend=True
+  Updated member AD7AV now expires 2025
+  append_transaction dryrun: {'Callsign': 'AD7AV', 'Date': '2024-12-08', 'Amount': '5.00', 'Donate': '0.00', 'Trans No': '2322'}
+```
+after which you can drop the --dryrun flag and process for real with:
+```
+./process_dues_payments.py  --date=2024-12-08 KC7GR W7KWS K7FW WA7CHF AC7MD AD7AV
+  Member KC7GR paid through 2024, year=2025, extend=True
+  Updated member KC7GR now expires 2025
+  Member W7KWS paid through 2005, year=2025, extend=True
+  Updated member W7KWS now expires 2025
+  Member K7FW paid through 2024, year=2025, extend=True
+  Updated member K7FW now expires 2025
+  Member WA7CHF paid through 2024, year=2025, extend=True
+  Updated member WA7CHF now expires 2025
+  Member AC7MD paid through 2024, year=2025, extend=True
+  Updated member AC7MD now expires 2025
+  Member AD7AV paid through 2024, year=2025, extend=True
+  Updated member AD7AV now expires 2025
+```
+The debugging output may get trimmed down in the future or more likely hidden behind --verbose flag.
+
+There are several error that can occur which will generate a line beginning "Error: ", and will be self explanatory.
