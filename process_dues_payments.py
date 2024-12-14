@@ -53,9 +53,9 @@ def main():
     transactions = Transactions(args.transactions)
 
     for call in args.callsigns:
-        transaction = transactions.new(call, args.date, args.dues, args.donation)
+        transaction = transactions.new(call.upper, args.date, args.dues, args.donation)
         try:
-            members.update_paid_thru(call, year=int(args.expiry), extend=args.extend)
+            members.update_paid_thru(call.upper, year=int(args.expiry), extend=args.extend)
             transactions.append(transaction, args.dryrun)
         except (Members.UnknownMember, Members.YearOutOfRange, Members.MemberPaidUp) as e:
             print(f'Error: {e}')
