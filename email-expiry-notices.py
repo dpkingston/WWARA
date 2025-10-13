@@ -150,6 +150,7 @@ def main():
     print(f"Credentials: {credentials}")
     now = datetime.datetime.now()
 
+    recipients = []
     for record in expiring:
         expiration_dt = datetime.datetime.strptime(record['expiration'], '%Y-%m-%d')
         #print('ID %s, expiration %s, delta %s' % (record['id'], expiration_dt, delta))
@@ -174,5 +175,9 @@ def main():
                 print(f"{record['id']} not in notifications")
             if send_email(template, record, credentials, args.send_emails):
                 write_notification(args.notifications, record)
+                recipients.append(record)
+    print(f'Notified {len(recipients)} trustees')
+    for record in recipients:
+        print(f'Notified {record["outfreq"]}, {record["stationloc"]}, {record["trst"]}, {record["email"]}')
 
 main()
