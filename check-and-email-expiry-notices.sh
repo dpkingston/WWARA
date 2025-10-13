@@ -3,6 +3,7 @@
 WORKING_DIRECTORY=/Users/dpk/src/WWARA
 DATE=$(date '+%Y%m%d-%H%M')
 SOURCE="/Users/dpk/Google Drive/Shared drives/WWARA Administration/Coordinations/Expiration90Days"
+# Email address that are notified each time this script runs
 ADMINS="dpk@randomnotes.org kenny@holenwall.com"
 LOG=email-expiry-log.$DATE
 
@@ -35,11 +36,11 @@ if test -f "${LATEST}"; then
 	./email-expiry-notices.py --send_emails "${LATEST}" notifications.csv WWARA_expiry_template.txt smtp_credentials.txt > $LOG 2>&1
 	if test $? == 0; then
 		echo success
-		grep "^Notified " $LOG | mail -s "WWARA Expiry Notice Summary" dpk@randomnotes.org
+		grep "^Notified " $LOG | mail -s "WWARA Expiry Notice Summary" $ADMINS
 		cleanup
 	else
 		echo failure
-		mail -s "WWARA Expiry Notice Summary (Failure Detected)" dpk@randomnotes.org < $LOG
+		mail -s "WWARA Expiry Notice Summary (Failure Detected)" $ADMINS < $LOG
 	fi
 else
 	echo nothing to process
