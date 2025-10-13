@@ -97,6 +97,7 @@ def main():
     print(f"Credentials: {credentials}")
     now = datetime.datetime.now()
 
+    notification_count = 0
     for record in expiring:
         expiration_dt = datetime.datetime.strptime(record['expiration'], '%Y-%m-%d')
         #print('ID %s, expiration %s, delta %s' % (record['id'], expiration_dt, delta))
@@ -121,5 +122,7 @@ def main():
                 print(f"{record['id']} not in notifications")
             if send_email(template, record, SMTP_SERVER, credentials, FROM, args.send_emails):
                 write_notification(args.notifications, record, NOTIFICATION_FIELDS)
+            notification_count += 1
+    print(f'notifications processed: {notification_count}')
 
 main()

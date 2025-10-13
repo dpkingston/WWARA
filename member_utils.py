@@ -63,9 +63,9 @@ class Members():
            address1='', address2='', city='', state='', zipcode='',
         '''
         record = {}
-        record['Callsign'] = callsign
-        record['First Name'] = firstname
-        record['Last Name'] = lastname
+        record['Callsign'] = callsign.upper()
+        record['First Name'] = firstname.capitalize()
+        record['Last Name'] = lastname.capitalize()
         record['Email'] = email
         record['Alt Email'] = alt_email
         record['Paid Thru'] = paid_thru

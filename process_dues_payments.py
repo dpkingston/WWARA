@@ -13,7 +13,7 @@ from member_utils import Members, Transactions
 
 MEMBERS = 'Members.csv'
 TRANSACTIONS = 'Transactions.csv'
-DUES = '5.00'
+DUES = '10.00'
 
 def not_iso_date(year, month, day):
     '''Return true if date is not in ISO date format (YYYY-MM-DD).'''
@@ -53,6 +53,8 @@ def main():
     transactions = Transactions(args.transactions)
 
     for call in args.callsigns:
+        call = call.upper()
+        print(f'Processing {call}')
         transaction = transactions.new(call, args.date, args.dues, args.donation)
         try:
             members.update_paid_thru(call, year=int(args.expiry), extend=args.extend)
