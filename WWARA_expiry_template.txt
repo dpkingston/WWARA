@@ -12,6 +12,11 @@ If the repeater/link is still operational, but the configuration has changed sin
 
 Please be advised that as of January 2012, the WWARA no longer requires a $$10 renewal and the method for submitting a TDS is via e-mail to the secretary. The new TDS form can be filled out online and saved as a PDF. (instruction available on the website here: https://www.wwara.org/tds.php) We have found this greatly reduces the complexity of the process and speeds up the coordination effort.
 
+When filling out the new TDS form to renew the coordination, please take care to address these common problems that will result in the TDS being rejected.
+ - No Alternative Contact provide
+ - Latitude / Longitude incorrect format
+The WWARA requires lat/long to be in the decimal degrees format. Use this FCC website to convert from the older/traditional Degrees/minutes/second format. https://www.fcc.gov/media/radio/dms-decimal
+
 If the repeater/link listed above is no longer under your trusteeship, please forward this e-mail to the new trustee. We would also appreciate being notified, so we can update our records. If the repeater is no longer on the air, please notify the WWARA secretary (secretary@wwara.org) by e-mail, so the data record can be put into archive status. (Or just reply to this e-mail)
 
 While we do not require a filing fee, we encourage all trustees to become members by submitting a voluntary online dues payment on our website (http://www.wwara.org/membership) including your call and contact information.
