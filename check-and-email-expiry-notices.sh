@@ -1,10 +1,12 @@
 #!/bin/bash
 
-WORKING_DIRECTORY=/Users/dpk/src/WWARA
+WORKING_DIRECTORY=/home/dpk/src/WWARA
 DATE=$(date '+%Y%m%d-%H%M')
-SOURCE="/Users/dpk/Google Drive/Shared drives/WWARA Administration/Coordinations/Expiration90Days"
+SOURCE="/home/dpk/gdrive/WWARA/Coordinations/Expiration90Days"
 ADMINS="dpk@randomnotes.org kenny@holenwall.com"
 LOG=email-expiry-log.$DATE
+
+rclone mount --daemon "gdrive-wwara:" ~/gdrive/WWARA
 
 cd $WORKING_DIRECTORY
 if test $? != 0; then echo chdir to WORKING_DIRECTORY failed; exit; fi
@@ -40,7 +42,7 @@ cleanup() {
 
 if test -f "${LATEST}"; then
 	echo "Found latest expirelist90days: ${LATEST}"
-	./email-expiry-notices.py --send_emails "${LATEST}" notifications.csv WWARA_expiry_template.txt smtp_credentials.txt > $LOG 2>&1
+	./email_expiry_notices.py --send_emails "${LATEST}" notifications.csv WWARA_expiry_template.txt smtp_credentials.txt > $LOG 2>&1
 	if test $? == 0; then
 		echo success
 		grep "^Notified " $LOG | mail -s "WWARA Expiry Notice Summary" $ADMINS
@@ -53,4 +55,4 @@ else
 	echo nothing to process
 fi
 
-
+fusermount -uz ~/gdrive/WWARA
