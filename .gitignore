@@ -1,5 +1,9 @@
 # Editor temporary files
 *~
+*.csv
+
+# Logs
+email-expiry-log.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
