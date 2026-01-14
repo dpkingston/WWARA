@@ -41,10 +41,17 @@ class Members():
             self.fieldnames = reader.fieldnames
             for row in reader:
                 #print(f"{row}")
+<<<<<<< HEAD
                 row['First Name'] = row['First Name'].capitalize()
                 row['Last Name'] = row['Last Name'].capitalize()
                 if row['Paid Thru'] == '':
                     row['Paid Thru'] = '1900'
+=======
+                row['FirstName'] = row['FirstName'].capitalize()
+                row['LastName'] = row['LastName'].capitalize()
+                if row['PaidThru'] == '':
+                    row['PaidThru'] = '1900'
+>>>>>>> 5e67b0d (Add more missing files.)
                 #for field in REMOVE_FIELDS:
                 #    if field in row:
                 #        del row[field]
@@ -64,12 +71,21 @@ class Members():
         '''
         record = {}
         record['Callsign'] = callsign.upper()
+<<<<<<< HEAD
         record['First Name'] = firstname.capitalize()
         record['Last Name'] = lastname.capitalize()
         record['Email'] = email
         record['Alt Email'] = alt_email
         record['Paid Thru'] = paid_thru
         record['User Level'] = '0'
+=======
+        record['FirstName'] = firstname.capitalize()
+        record['LastName'] = lastname.capitalize()
+        record['Email'] = email
+        record['AltEmail'] = alt_email
+        record['PaidThru'] = paid_thru
+        record['UserLevel'] = '0'
+>>>>>>> 5e67b0d (Add more missing files.)
         record['Password'] = 'NOT SET'
         #record['Organization'] = organization
         #record['Address1'] = address1
@@ -98,7 +114,11 @@ class Members():
 
     def get_paid_thru(self, call):
         '''Returns the current expiry year of a member.'''
+<<<<<<< HEAD
         return self.members[call]['Paid Thru']
+=======
+        return self.members[call]['PaidThru']
+>>>>>>> 5e67b0d (Add more missing files.)
 
     def update_paid_thru(self, call, year=None, extend=True):
         '''Update a members expiry date.
@@ -127,7 +147,11 @@ class Members():
             raise self.MemberPaidUp(f'Member {call} is already paid up until {paid_thru}')
         if paid_thru >= year:
             year = paid_thru + 1
+<<<<<<< HEAD
         self.members[call]['Paid Thru'] = str(year)
+=======
+        self.members[call]['PaidThru'] = str(year)
+>>>>>>> 5e67b0d (Add more missing files.)
         print(f'  Updated member {call} now expires {year}')
 
     def rewrite(self):
