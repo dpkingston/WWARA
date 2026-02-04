@@ -120,8 +120,8 @@ def main():
                     continue
             else:
                 print(f"{record['id']} not in notifications")
-            if send_email(template, record, credentials, args.send_emails):
-                write_notification(args.notifications, record)
+            if send_email(template, record, SMTP_SERVER, credentials, FROM, args.send_emails):
+                write_notification(args.notifications, record, NOTIFICATION_FIELDS)
                 recipients.append(record)
     print(f'Notified {len(recipients)} trustees')
     for record in recipients:
