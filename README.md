@@ -36,7 +36,12 @@ up upcoming coordination expirations, and sending dues renewal notices.
 
 ### Sending Dues Renewal Notices
 
-If you have an up-to-date Members.csv file, you can skip to "Pick a unique name for the notifications file".
+If you have an up-to-date Members.csv file, you can select members to receive dues reminders by
+year, then skip to "Pick a unique name for the notifications file". Here is a simple command
+to select members expiring in 2025 and 2026:
+```
+egrep ",2025,|,2026," Members.csv > ExpiringMembers.csv
+```
 
 1. Clone this repository to a local directory on machine with python3 installed. If you already have a clone, use git pull to ensure its up to date.
 
