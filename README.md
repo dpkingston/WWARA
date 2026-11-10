@@ -36,9 +36,11 @@ up upcoming coordination expirations, and sending dues renewal notices.
 
 ### Sending Dues Renewal Notices
 
+If you have an up-to-date Members.csv file, you can skip to "Pick a unique name for the notifications file".
+
 1. Clone this repository to a local directory on machine with python3 installed. If you already have a clone, use git pull to ensure its up to date.
 
-1. Screne scrape the member list page from the Members tab of the database Web GUI for the population you want to notify (probably sort by expiry date).
+1. Screen scrape the member list page from the Members tab of the database Web GUI for the population you want to notify (probably sort by expiry date).
    Avoid those already paid up for the coming year.  One option is to select expiring/expired members who have been members during tha last 3 years.
    A cut and paste of the lines on this page should generate a file with tab delimiters between the fields.  Place in some file like temp.txt.
 
@@ -58,7 +60,7 @@ call,first,last,email,alt_email,expiry,level,flag
 
 1. Run a dry run pass that will not send any email or update DuesNogifications-Dec2024.csv
 ```
-./email_dues_renewal.py ExpiringMembers.csv DuesNogifications-Dec2024.csv WWARA_dues_template.txt smtp_credentials.txt > log.test
+./email_dues_reminder.py ExpiringMembers.csv DuesNogifications-Dec2024.csv WWARA_dues_template.txt smtp_credentials.txt > log.test
 ```
 
 1. Review the logfile for correctness.
